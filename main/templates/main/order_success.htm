@@ -1,0 +1,17 @@
+<h2>Place Order</h2>
+<form method="post">
+  {% csrf_token %}
+  <label>Your Name:</label><br>
+  <input type="text" name="name"><br><br>
+
+  <label>Select Food Items:</label><br>
+  {% for item in items %}
+    <input type="checkbox" name="items" value="{{ item.id }}"> {{ item.name }} - ${{ item.price }}<br>
+  {% endfor %}
+  
+  <br><input type="submit" value="Order">
+</form>
+
+{% if error %}
+  <p style="color: red;">{{ error }}</p>
+{% endif %}

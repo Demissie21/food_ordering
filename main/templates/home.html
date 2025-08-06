@@ -1,0 +1,14 @@
+<!-- main/templates/main/home.html -->
+<h1>Food Menu</h1>
+
+<ul>
+  {% for food in foods %}
+  <li>
+    <strong>{{ food.name }}</strong> - ${{ food.price }} <br>
+    {{ food.description }} <br>
+    <a href="{% url 'add_to_cart' food.id %}">Add to Cart</a>
+  </li>
+  {% empty %}
+  <li>No food items available.</li>
+  {% endfor %}
+</ul>

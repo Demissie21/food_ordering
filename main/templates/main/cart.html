@@ -1,0 +1,21 @@
+<!-- main/templates/main/cart.html -->
+<h1>Your Cart</h1>
+
+<ul>
+  {% for item in cart_items %}
+  <li>
+    {{ item.food.name }} - Quantity: {{ item.quantity }} - Price: ${{ item.food.price|floatformat:2 }}<br>
+  </li>
+  {% empty %}
+  <li>Your cart is empty.</li>
+  {% endfor %}
+</ul>
+
+{% if cart_items %}
+<p><strong>Total Price: ${{ total_price|floatformat:2 }}</strong></p>
+
+<form method="post" action="{% url 'place_order' %}">
+  {% csrf_token %}
+  <button type="submit">Place Order</button>
+</form>
+{% endif %}

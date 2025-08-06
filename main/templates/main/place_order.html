@@ -1,0 +1,8 @@
+<h1>Place Order</h1>
+<form method="post">
+    {% csrf_token %}
+    <label>Name: <input type="text" name="name" required></label><br>
+    <h3>Select Items:</h3>
+        <input type="checkbox" name="items" value="{{ item.id }}"> {{ item.name }} - ${{ item.price }}<br>
+    <button type="submit">Order</button>
+</form>
