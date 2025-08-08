@@ -1,32 +1,35 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import FoodItem, Order
+from .models import Food, Order, CartItem
+from django.contrib.auth.decorators import login_required
 
+# Display the menu
 def menu(request):
-    items = FoodItem.objects.filter(available=True)
+    items = Food.objects.filter(available=True)
     return render(request, 'main/menu.html', {'items': items})
 
+# Handle placing an order
+@login_required
 def place_order(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
         selected_items = request.POST.getlist('items')
 
-        if not name or not selected_items:
+        if not selected_items:
             return render(request, 'main/place_order.html', {
-                'items': FoodItem.objects.filter(available=True),
-                'error': 'Please enter your name and select at least one item.'
+                'items': Food.objects.filter(available=True),
+                'error': 'Please select at least one item.'
             })
 
-        total = 0
-        food_items = []
-        for item_id in selected_items:
-            item = get_object_or_404(FoodItem, id=item_id)
-            food_items.append(item)
-            total += item.price
+        # Create the order for the logged-in user
+        order = Order.objects.create(user=request.user)
 
-        order = Order.objects.create(customer_name=name, total_price=total)
-        order.items.set(food_items)
-        return redirect('menu')  # or 'order_success' if you want a confirmation page
+        # Add selected food items as CartItems linked to this order
+        for item_id in selected_items:
+            food = get_object_or_404(Food, id=item_id)
+            cart_item = CartItem.objects.create(user=request.user, food=food, quantity=1)
+            order.items.add(cart_item)
+
+        return redirect('menu')  # Redirect after successful order
 
     else:
-        items = FoodItem.objects.filter(available=True)
+        items = Food.objects.filter(available=True)
         return render(request, 'main/place_order.html', {'items': items})
