@@ -1,9 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Place Order{% endblock %}
+
+{% block content %}
+<h2>Place Your Order</h2>
 <form method="POST">
   {% csrf_token %}
-  <p>Select items:</p>
-    <input type="checkbox" name="items" value="{{ item.id }}"> {{ item.name }} ({{ item.price }})<br>
-  {% if error %}
-    <p style="color:red;">{{ error }}</p>
-  {% endif %}
+  {% for item in items %}
+    <div>
+      <input type="checkbox" name="items" value="{{ item.id }}" id="item_{{ item.id }}">
+      <label for="item_{{ item.id }}">{{ item.name }} - ${{ item.price }}</label>
+      Quantity: <input type="number" name="quantity_{{ item.id }}" value="1" min="1" style="width:50px;">
+    </div>
+  {% empty %}
+    <p>No food items available.</p>
+  {% endfor %}
   <button type="submit">Place Order</button>
 </form>
+{% endblock %}

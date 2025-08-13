@@ -1,0 +1,13 @@
+<h2>Order Confirmation</h2>
+<p>Thank you for your order, {{ order.user.username }}!</p>
+<p>Order ID: {{ order.id }}</p>
+<p>Placed on: {{ order.created_at|date:"M d, Y H:i" }}</p>
+
+<h3>Items:</h3>
+<ul>
+  {% for item in order.items.all %}
+    <li>{{ item.food.name }} — Qty: {{ item.quantity }} — Price: ${{ item.food.price }}</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'menu' %}">Back to Menu</a> | <a href="{% url 'order_history' %}">View Your Orders</a>

@@ -15,3 +15,23 @@
 {% if error %}
   <p style="color: red;">{{ error }}</p>
 {% endif %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Confirmation</title>
+</head>
+<body>
+    <h2>Order Confirmation</h2>
+    <p>Thank you, {{ order.user.username }}!</p>
+    <p>Your order ID is: <strong>#{{ order.id }}</strong></p>
+
+    <h3>Items Ordered:</h3>
+    <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.food.name }} x {{ item.quantity }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'menu' %}">← Back to Menu</a>
+</body>
+</html>
