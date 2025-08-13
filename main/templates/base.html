@@ -8,7 +8,16 @@
       .alert { padding: 10px; margin: 10px 0; border-radius: 4px; }
       .alert-success { background-color: #d4edda; color: #155724; }
       .alert-error { background-color: #f8d7da; color: #721c24; }
-      nav a { margin-right: 15px; }
+      nav a, nav form { margin-right: 15px; display: inline-block; vertical-align: middle; }
+      nav form button {
+        background: none;
+        border: none;
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 0;
+        font: inherit;
+      }
     </style>
 </head>
 <body>
@@ -18,10 +27,12 @@
     <a href="{% url 'order_history' %}">Order History</a>
     {% if user.is_authenticated %}
       <span>Hello, {{ user.username }}!</span>
-      <a href="{% url 'logout' %}">Logout</a>
+      <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+      </form>
     {% else %}
       <a href="{% url 'login' %}">Login</a>
-      <a href="{% url 'register' %}">Register</a>
     {% endif %}
   </nav>
 
@@ -40,10 +51,3 @@
   </main>
 </body>
 </html>
-<a href="{% url 'logout' %}">Logout</a>
-<form method="POST" action="{% url 'logout' %}" style="display:inline;">
-  {% csrf_token %}
-  <button type="submit" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer;">
-    Logout
-  </button>
-</form>

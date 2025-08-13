@@ -1,20 +1,23 @@
-<h2>Your Order History</h2>
-
-{% if orders %}
-  <ul>
-    {% for order in orders %}
-      <li>
-        Order #{{ order.id }} placed on {{ order.created_at|date:"M d, Y H:i" }}
+<!-- templates/order_history.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order History</title>
+</head>
+<body>
+    <h2>Your Order History</h2>
+    {% if orders %}
         <ul>
-          {% for item in order.items.all %}
-            <li>{{ item.food.name }} — Qty: {{ item.quantity }}</li>
-          {% endfor %}
+        {% for order in orders %}
+            <li>
+                {{ order.food_name }} - Quantity: {{ order.quantity }} -
+                Price: {{ order.price }} - Date: {{ order.order_date }}
+            </li>
+        {% endfor %}
         </ul>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>You have no orders yet.</p>
-{% endif %}
-
-<a href="{% url 'menu' %}">Back to Menu</a>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
+    <a href="/">Back to Home</a>
+</body>
+</html>

@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2>Place Your Order</h2>
-<form method="POST">
+<form method="POST" action="{% url 'place_order' %}">
   {% csrf_token %}
   {% for item in items %}
     <div>
@@ -16,5 +16,10 @@
     <p>No food items available.</p>
   {% endfor %}
   <button type="submit">Place Order</button>
+</form>
+
+<form method="post" action="{% url 'logout' %}" style="margin-top: 20px;">
+  {% csrf_token %}
+  <button type="submit">Logout</button>
 </form>
 {% endblock %}

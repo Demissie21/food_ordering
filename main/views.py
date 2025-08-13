@@ -4,6 +4,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import Order
+
+@login_required
+def order_history(request):
+    orders = Order.objects.filter(user=request.user).order_by('-order_date')
+    return render(request, 'main/order_history.html', {'orders': orders})
+
+@login_required
+def order_success(request):
+    return render(request, 'main/order_success.html')
 
 def register(request):
     if request.method == 'POST':

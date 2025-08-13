@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth.views import LogoutView
+from django.views.generic import RedirectView
 from django.urls import path
-
+from django.views.generic import RedirectView
 urlpatterns = [
-    path('accounts/logout/', LogoutView.as_view(next_page='/'), name='logout'),
+    path('login/', RedirectView.as_view(url='/accounts/login/'), name='login_redirect'),
     path('admin/', admin.site.urls),
-    path('', include('main.urls')),  # Your app URLs
-    path('accounts/', include('django.contrib.auth.urls')),  # Login/logout URLs
+    path('', RedirectView.as_view(url='/menu/')),  # Redirect root URL to /menu/
+    path('', include('main.urls')),  # Include your app URLs here
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
